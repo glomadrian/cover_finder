@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import es.gldos.coverFinder.cover.CoverResult;
 import es.gldos.coverFinder.exception.CoverNotFoundException;
 import es.gldos.coverFinder.exception.ServiceErrorException;
 import org.apache.http.HttpEntity;
@@ -21,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -51,11 +51,15 @@ public class ITunesCoverService implements ICoverService {
      *Service object name
      */
 
-     private static final String RESULT_COUNT = "resultCount";
-     private static final String RESULT_ARRAY = "results";
-     private static final String ARTWORK_100 = "artworkUrl100";
+    private static final String RESULT_COUNT = "resultCount";
+    private static final String RESULT_ARRAY = "results";
+    private static final String ARTWORK_30 = "artworkUrl30";
+    private static final String ARTWORK_60 = "artworkUrl60";
+    private static final String ARTWORK_100 = "artworkUrl100";
 
-     private ArrayList<URL> imageUrlList;
+
+
+     private CoverResult coverResult;
 
 
     private String performSearch(String title, String artist) throws IOException, URISyntaxException, HttpException {
@@ -114,7 +118,7 @@ public class ITunesCoverService implements ICoverService {
     }
 
     @Override
-    public ArrayList<URL> searchCover(String title, String artist) throws ServiceErrorException, CoverNotFoundException {
+    public CoverResult searchCover(String title, String artist) throws ServiceErrorException, CoverNotFoundException {
 
         try {
             String jsonResponse = performSearch(title,artist);
@@ -127,7 +131,7 @@ public class ITunesCoverService implements ICoverService {
 
             if (results.size()>0){
 
-                imageUrlList = new ArrayList<URL>();
+                coverResult = new CoverResult();
 
 
                 JsonObject track = results.get(0).getAsJsonObject();
@@ -136,9 +140,19 @@ public class ITunesCoverService implements ICoverService {
                 {
                     String urlString = track.get(ARTWORK_100).getAsString();
                     URL url = new URL(urlString);
-                    imageUrlList.add(url);
-
-
+                    coverResult.setLargerCover(url);
+                }
+                else if (track.has(ARTWORK_60))
+                {
+                    String urlString = track.get(ARTWORK_60).getAsString();
+                    URL url = new URL(urlString);
+                    coverResult.setMediumCover(url);
+                }
+                else if (track.has(ARTWORK_30))
+                {
+                    String urlString = track.get(ARTWORK_30).getAsString();
+                    URL url = new URL(urlString);
+                    coverResult.setSmallCover(url);
                 }
                 else {
                     throw  new CoverNotFoundException();
@@ -155,7 +169,7 @@ public class ITunesCoverService implements ICoverService {
             throw new ServiceErrorException();
         }
 
-        return imageUrlList;
+        return coverResult;
     }
 
 

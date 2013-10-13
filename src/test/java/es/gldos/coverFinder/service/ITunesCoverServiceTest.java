@@ -1,11 +1,9 @@
 package es.gldos.coverFinder.service;
 
+import es.gldos.coverFinder.cover.CoverResult;
 import es.gldos.coverFinder.exception.CoverNotFoundException;
 import es.gldos.coverFinder.exception.ServiceErrorException;
 import junit.framework.TestCase;
-
-import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * @author Adrian Garcia Lomas
@@ -20,10 +18,10 @@ public class ITunesCoverServiceTest extends TestCase {
         ICoverService service =new ITunesCoverService();
         try {
 
-            ArrayList<URL> urlList = service.searchCover("Master of puppets", "metallica");
+            CoverResult coverResult = service.searchCover("Master of puppets", "metallica");
 
-            assertNotNull(urlList);
-            assertEquals(urlList.size(),1);
+            assertNotNull(coverResult);
+//            assertEquals(urlList.size(),1);
 
         } catch (ServiceErrorException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -41,7 +39,7 @@ public class ITunesCoverServiceTest extends TestCase {
 
         try {
 
-            ArrayList<URL> urlList = service.searchCover("fake_not_exits", "fake_not_exits");
+            CoverResult coverResult = service.searchCover("fake_not_exits", "fake_not_exits");
 
         } catch (ServiceErrorException e) {
             assertNull(e);

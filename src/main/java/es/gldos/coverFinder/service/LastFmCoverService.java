@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import es.gldos.coverFinder.cover.CoverResult;
 import es.gldos.coverFinder.exception.APIKeyServiceException;
 import es.gldos.coverFinder.exception.CoverNotFoundException;
 import es.gldos.coverFinder.exception.ServiceErrorException;
@@ -22,7 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -56,9 +56,18 @@ public class LastFmCoverService implements ICoverService {
     private static final String ALBUM_OBJECT = "album";
     private static final String IMAGE_OBJECT = "image";
     private static final String TEXT_PROPERTIE = "#text";
+    private static final String SIZE_PROPERTIE = "size";
     private static final String ERROR_PROPERTIE = "error";
 
-    private ArrayList<URL> imageUrlList;
+    /**
+     * Sizes types
+     */
+
+    private static final String SIZE_SMALL = "small";
+    private static final String SIZE_MEDIUM = "medium";
+    private static final String SIZE_LARGE = "large";
+
+    private CoverResult coverResult;
     private String apiKey;
     private String secret;
 
@@ -68,7 +77,7 @@ public class LastFmCoverService implements ICoverService {
     }
 
     @Override
-    public ArrayList<URL> searchCover(String title, String artist) throws ServiceErrorException, CoverNotFoundException {
+    public CoverResult searchCover(String title, String artist) throws ServiceErrorException, CoverNotFoundException {
 
         try {
             String jsonResponse = performSearch(title,artist);
@@ -87,17 +96,27 @@ public class LastFmCoverService implements ICoverService {
 
             //If not problem until here, now create arraylist
 
-            imageUrlList = new ArrayList<URL>();
+            coverResult = new CoverResult();
 
             for(int i=0;i<imageArray.size();i++){
 
-                String urlString = imageArray.get(i).getAsJsonObject().get(TEXT_PROPERTIE).getAsString();
+                JsonObject object  = imageArray.get(i).getAsJsonObject();
+
+                String urlString = object.get(TEXT_PROPERTIE).getAsString();
+                String size = object.get(SIZE_PROPERTIE).getAsString();
+
                 URL url = new URL(urlString);
-                imageUrlList.add(url);
-            }
+
+                if(size.equals(SIZE_SMALL))
+                    coverResult.setSmallCover(url);
+                if(size.equals(SIZE_MEDIUM))
+                    coverResult.setMediumCover(url);
+                if(size.equals(SIZE_LARGE))
+                    coverResult.setLargerCover(url);
+             }
 
 
-            return imageUrlList;
+            return coverResult;
 
         } catch (IOException e ) {
             throw new ServiceErrorException();
@@ -107,6 +126,8 @@ public class LastFmCoverService implements ICoverService {
             throw new ServiceErrorException();
         } catch (APIKeyServiceException e) {
             throw new ServiceErrorException();
+        } catch (NullPointerException e){
+            throw new CoverNotFoundException();
         }
 
 
