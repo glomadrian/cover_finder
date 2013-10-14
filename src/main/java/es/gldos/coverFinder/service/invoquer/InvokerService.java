@@ -65,7 +65,7 @@ public class InvokerService {
 
 
     private boolean hasNext(){
-        return servicesQueque.size() > position;
+        return servicesQueque.size()-1 > position;
     }
 
     private CoverResult executeService(String title,String artist) throws ServiceErrorException, CoverNotFoundException {

@@ -8,11 +8,11 @@ import java.io.InputStream;
  * Interface for all image handler
  * @author  Adrian Garcia Lomas
  */
-public interface IImageHandler {
+public interface IImageHandler <T>{
 
     /**
      * Every imageHandler must implement the method getImage
      * @return InputStream
      */
-    public InputStream getImage() throws ImageNotFoundException;
+    public InputStream getImage(T image) throws ImageNotFoundException;
 }

@@ -13,18 +13,12 @@ import java.net.URL;
 /**
  * @author Adrian Garcia Lomas
  */
-public class URLImageHandler implements IImageHandler{
+public class URLImageHandler implements IImageHandler<URL>{
 
-
-    private URL imageURL;
-
-    public URLImageHandler(URL imageURL){
-        this.imageURL = imageURL;
-    }
 
 
     @Override
-    public InputStream getImage() throws ImageNotFoundException {
+    public InputStream getImage(URL imageURL) throws ImageNotFoundException {
 
         try {
             BufferedImage bufferedImage = ImageIO.read(imageURL);
@@ -38,4 +32,6 @@ public class URLImageHandler implements IImageHandler{
         }
 
     }
+
+
 }

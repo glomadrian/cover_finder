@@ -17,11 +17,11 @@ public class CustomFolderImageHandlerTest extends TestCase {
         InputStream imageInputStream = null;
 
 
-        IImageHandler imageHandler = new CustomFolderImageHandler("src/test/testFolder","test.png");
+        IImageHandler imageHandler = new CustomFolderImageHandler();
 
         try {
 
-            InputStream inputStream = imageHandler.getImage();
+            InputStream inputStream = imageHandler.getImage("src/test/testFolder/test.png");
             assertNotNull(inputStream);
 
         } catch (ImageNotFoundException e) {
@@ -36,11 +36,11 @@ public class CustomFolderImageHandlerTest extends TestCase {
         InputStream imageInputStream = null;
 
 
-        IImageHandler imageHandler = new CustomFolderImageHandler("fakeFolder","fakeImage.png");
+        IImageHandler imageHandler = new CustomFolderImageHandler();
 
         try {
 
-            InputStream inputStream = imageHandler.getImage();
+            InputStream inputStream = imageHandler.getImage("fakeFolder/fakeImage.png");
             assertNull(inputStream);
 
         } catch (ImageNotFoundException e) {

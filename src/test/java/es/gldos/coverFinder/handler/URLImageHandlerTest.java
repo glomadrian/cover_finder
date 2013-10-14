@@ -27,9 +27,9 @@ public class URLImageHandlerTest extends TestCase{
 
 
 
-        IImageHandler imageHandler = new URLImageHandler(url);
+        IImageHandler imageHandler = new URLImageHandler();
         try {
-            imageInputStream =  imageHandler.getImage();
+            imageInputStream =  imageHandler.getImage(url);
         } catch (ImageNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -52,9 +52,9 @@ public class URLImageHandlerTest extends TestCase{
         }
 
 
-        IImageHandler imageHandler = new URLImageHandler(url);
+        IImageHandler imageHandler = new URLImageHandler();
         try {
-            imageInputStream =  imageHandler.getImage();
+            imageInputStream =  imageHandler.getImage(url);
         } catch (ImageNotFoundException e) {
             Assert.assertNotNull(e);
         }

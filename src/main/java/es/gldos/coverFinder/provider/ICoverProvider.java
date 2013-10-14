@@ -1,10 +1,13 @@
 package es.gldos.coverFinder.provider;
 
+import es.gldos.coverFinder.exception.ImageNotFoundException;
+
 /**
- * Interface for all cover providers,a  cover provider always must return a valid CoverResult object,
- * if not find a cover in any coverService must return a image with no cover or anithing else
+ * Interface for all cover providers
  *
  * @author Adrian Garcia Lomas
  */
-public interface ICoverProvider {
+public interface ICoverProvider <T> {
+
+        T getCover(String title, String artist) throws ImageNotFoundException;
 }
