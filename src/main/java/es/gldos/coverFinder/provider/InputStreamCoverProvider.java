@@ -14,7 +14,7 @@ import java.io.InputStream;
  * The default cover provider alwais return a image cover, if the serices not return any image cover the provider return a default image
  * @author Adrian Garcia Lomas
  */
-public class InputStreamCoverProvider implements ICoverProvider{
+public class InputStreamCoverProvider implements ICoverProvider<InputStream>{
 
     public static final int SMALL_SIZE = 0;
     public static final int MEDIUM_SIZE = 1;
@@ -46,10 +46,13 @@ public class InputStreamCoverProvider implements ICoverProvider{
 
                 case SMALL_SIZE:
                     inputStream =  urlImageHandler.getImage(cover.getSmallCover());
+                    break;
                 case MEDIUM_SIZE:
                     inputStream =  urlImageHandler.getImage(cover.getMediumCover());
+                    break;
                 case LARGE_SIZE:
                     inputStream = urlImageHandler.getImage(cover.getLargerCover());
+                    break;
             }
         } catch (ServiceErrorException e) {
           return  generateNoCoverResult();
