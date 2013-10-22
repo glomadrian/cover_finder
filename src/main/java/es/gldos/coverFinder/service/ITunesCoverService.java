@@ -139,22 +139,31 @@ public class ITunesCoverService implements ICoverService {
                 if(track.has(ARTWORK_100))
                 {
                     String urlString = track.get(ARTWORK_100).getAsString();
+
+                    LOG.info("URL artwork 100 "+urlString);
+
                     URL url = new URL(urlString);
                     coverResult.setLargerCover(url);
                 }
-                else if (track.has(ARTWORK_60))
+                 if (track.has(ARTWORK_60))
                 {
                     String urlString = track.get(ARTWORK_60).getAsString();
+
+                    LOG.info("URL artwork 60 "+urlString);
+
                     URL url = new URL(urlString);
                     coverResult.setMediumCover(url);
                 }
-                else if (track.has(ARTWORK_30))
+                 if (track.has(ARTWORK_30))
                 {
                     String urlString = track.get(ARTWORK_30).getAsString();
+
+                    LOG.info("URL artwork 30 "+urlString);
+
                     URL url = new URL(urlString);
                     coverResult.setSmallCover(url);
                 }
-                else {
+                if(!track.has(ARTWORK_30)&&!track.has(ARTWORK_60)&&!track.has(ARTWORK_100)) {
                     throw  new CoverNotFoundException();
                 }
 
