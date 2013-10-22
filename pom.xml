@@ -4,7 +4,7 @@
   <groupId>es.gldos.coverFinder</groupId>
   <artifactId>cover_finder</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.1</version>
+  <version>1.0.22</version>
   <name>cover_finder</name>
   <url>http://maven.apache.org</url>
     <distributionManagement>
